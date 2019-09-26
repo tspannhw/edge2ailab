@@ -18,11 +18,8 @@ input message: :3> {"sensor_ts":1569497509899,"sensor_id":3,"sensor_0":1,"sensor
 10> (1569497501323,9,88,52,8)
 2> (1569497501219,6,86,11,7)
 6> (1569497501639,10,33,54,10)
-
 ```
-comming soon
-```
-
+  
 ### setup:
 
 The project generated a fat-jar which can executed with **iot.sh** - the & symbol, switches the program to run in the background. 
