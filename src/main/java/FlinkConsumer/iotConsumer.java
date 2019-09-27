@@ -15,6 +15,8 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingProcessingTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
+import org.apache.flink.streaming.util.serialization.KeyedSerializationSchema;
 import org.apache.flink.util.Collector;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 
@@ -55,14 +57,13 @@ public class iotConsumer {
         aggStream.print();
 
 
-/*
+
         // write the aggregated data stream to a Kafka sink
         aggStream.addSink(new FlinkKafkaProducer<>(
                 Commons.EXAMPLE_KAFKA_SERVER,
                 "simulation_sum",
                 new serializeSum2String()));
 
-*/
         // execute program
         JobExecutionResult result = env.execute("Streaming Kafka");
         JobID jobId = result.getJobID();
@@ -90,8 +91,8 @@ public class iotConsumer {
 
     }
 
-/*
-    private static class serializeSum2String implements KeyedSerializationSchema<Tuple5<String, String, String, Double>> {
+
+    private static class serializeSum2String implements KeyedSerializationSchema<Tuple5<Long, String, String, String, Integer>> {
         @Override
         public byte[] serializeKey(Tuple5 element) {
             return (null);
@@ -101,10 +102,10 @@ public class iotConsumer {
 
             String str = "{"
                     + "\"type\"" + ":" +"\"Sum over 10 sec window\""
-                    + "," + "\"time\"" + ":" + value.getField(0).toString()
-                    + "," + "\"tag\"" + ":" + value.getField(1).toString()
-                    + "," + "\"unit\"" + ":" + value.getField(2).toString()
-                    + "," + "\"sum\"" + ":" + value.getField(3).toString() + "}";
+                    + "," + "\"sensor_ts_start\"" + ":" + value.getField(0).toString()
+                    + "," + "\"sensor_id\"" + ":" + value.getField(1).toString()
+                    + "," + "\"sensor_0\"" + ":" + value.getField(2).toString()
+                    + "," + "\"window_count\"" + ":" + value.getField(4).toString() + "}";
             return str.getBytes();
         }
         @Override
@@ -112,8 +113,5 @@ public class iotConsumer {
             // use always the default topic
             return null;
         }
-
-
     }
-    */
 }

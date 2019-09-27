@@ -20,10 +20,16 @@ input message: :3> {"sensor_ts":1569497509899,"sensor_id":3,"sensor_0":1,"sensor
 6> (1569497501639,10,33,54,10)
 ```
   
-### setup:
+### Setup:
 
 The project generated a fat-jar which can executed with **iot.sh** - the & symbol, switches the program to run in the background. 
-                                                       
+
+install:
+```
+wget https://github.com/zBrainiac/edge2ailab/releases/download/0.1.1/edge2ai-lab-0.1.0-SNAPSHOT-jar-with-dependencies.jar
+```
+
+for headless/background execution                                                       
 ```
 #!/bin/sh
 nohup java -jar target/edge2ai-lab-0.1.0-SNAPSHOT-jar-with-dependencies &
