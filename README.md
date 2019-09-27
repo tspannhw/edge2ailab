@@ -3,7 +3,7 @@
 Collected iot events and pushing into Apache Kafka. The App reads the Kafka events, do some filtering and summarizing over a  10 sec. window based on the "sensor_id".  
 The result which is reported end of the window period returns the value sensor_ts, sensor_id, sensor_0, sensor_1 of the first event plus a counter.
 
-
+Job-log:  
 ```
 input message: :3> {"sensor_ts":1569497509282,"sensor_id":5,"sensor_0":62,"sensor_1":7,"sensor_2":39,"sensor_3":69,"sensor_4":35,"sensor_5":65,"sensor_6":8,"sensor_7":84,"sensor_8":48,"sensor_9":41,"sensor_10":41,"sensor_11":56}
 input message: :3> {"sensor_ts":1569497509384,"sensor_id":10,"sensor_0":66,"sensor_1":50,"sensor_2":26,"sensor_3":26,"sensor_4":57,"sensor_5":22,"sensor_6":38,"sensor_7":69,"sensor_8":87,"sensor_9":63,"sensor_10":4,"sensor_11":71}
@@ -19,18 +19,25 @@ input message: :3> {"sensor_ts":1569497509899,"sensor_id":3,"sensor_0":1,"sensor
 2> (1569497501219,6,86,11,7)
 6> (1569497501639,10,33,54,10)
 ```
-  
+
+Kafka output:  
+```
+{"type":"Sum over 10 sec window","sensor_ts_start":1569598190568,"sensor_id":6,"sensor_0":55,"window_count":12}
+{"type":"Sum over 10 sec window","sensor_ts_start":1569598190773,"sensor_id":10,"sensor_0":70,"window_count":6}
+{"type":"Sum over 10 sec window","sensor_ts_start":1569598194047,"sensor_id":2,"sensor_0":10,"window_count":6}
+```
+
 ### Setup:
 
 The project generated a fat-jar which can executed with **iot.sh** - the & symbol, switches the program to run in the background. 
 
 install:
 ```
-wget https://github.com/zBrainiac/edge2ailab/releases/download/0.1.1/edge2ai-lab-0.1.0-SNAPSHOT-jar-with-dependencies.jar
+wget https://github.com/zBrainiac/edge2ailab/releases/download/0.1.2/edge2ai-lab-0.1.2-SNAPSHOT-jar-with-dependencies.jar
 ```
 
 for headless/background execution                                                       
 ```
 #!/bin/sh
-nohup java -jar target/edge2ai-lab-0.1.0-SNAPSHOT-jar-with-dependencies &
+nohup java -jar target/edge2ai-lab-0.1.2-SNAPSHOT-jar-with-dependencies &
 ```
