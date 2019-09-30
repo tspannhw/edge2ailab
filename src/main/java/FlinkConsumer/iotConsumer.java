@@ -48,7 +48,7 @@ public class iotConsumer {
         opcStream.print("input message: ");
 
         // deserialization of the received JSONObject into Tuple
-        DataStream<Tuple5<Long, String, String, String, Integer>> aggStream = opcStream
+        DataStream<Tuple5<Long, Integer, Integer, Integer, Integer>> aggStream = opcStream
                 .flatMap(new trxJSONDeserializer())
                 .keyBy(1)
                 .window(TumblingProcessingTimeWindows.of(Time.seconds(10)))
@@ -70,11 +70,11 @@ public class iotConsumer {
         System.out.println("jobId=" + jobId);
     }
 
-    public static class trxJSONDeserializer implements FlatMapFunction<String, Tuple5<Long, String, String, String, Integer>> {
+    public static class trxJSONDeserializer implements FlatMapFunction<String, Tuple5<Long, Integer, Integer, Integer, Integer>> {
         private transient ObjectMapper jsonParser;
 
         @Override
-        public void flatMap(String value, Collector<Tuple5<Long, String, String, String, Integer>> out) throws Exception {
+        public void flatMap(String value, Collector<Tuple5<Long, Integer, Integer, Integer, Integer>> out) throws Exception {
             if (jsonParser == null) {
                 jsonParser = new ObjectMapper();
             }
@@ -82,9 +82,9 @@ public class iotConsumer {
 
             // get shop_name AND fx from JSONObject
             Long sensor_ts = jsonNode.get("sensor_ts").asLong();
-            String sensor_id = jsonNode.get("sensor_id").toString();
-            String sensor_0 = jsonNode.get("sensor_0").toString();
-            String sensor_1 = jsonNode.get("sensor_1").toString();
+            Integer sensor_id = jsonNode.get("sensor_id").asInt();
+            Integer sensor_0 = jsonNode.get("sensor_0").asInt();
+            Integer sensor_1 = jsonNode.get("sensor_1").asInt();
             out.collect(new Tuple5<>(sensor_ts, sensor_id, sensor_0, sensor_1, 1));
 
         }
@@ -92,7 +92,7 @@ public class iotConsumer {
     }
 
 
-    private static class serializeSum2String implements KeyedSerializationSchema<Tuple5<Long, String, String, String, Integer>> {
+    private static class serializeSum2String implements KeyedSerializationSchema<Tuple5<Long, Integer, Integer, Integer, Integer>> {
         @Override
         public byte[] serializeKey(Tuple5 element) {
             return (null);
