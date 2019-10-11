@@ -54,9 +54,6 @@ public class iotConsumer {
                 .window(TumblingProcessingTimeWindows.of(Time.seconds(10)))
                 .sum(4)  ;
 
-        aggStream.print();
-
-
 
         // write the aggregated data stream to a Kafka sink
         aggStream.addSink(new FlinkKafkaProducer<>(
